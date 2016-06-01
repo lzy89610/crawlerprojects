@@ -9,6 +9,7 @@ import java.util.Set;
 /**
  * Created by lizeyu on 2016/5/25.
  */
+@Deprecated
 public class ASINTemp{
 
     private Set<String> asinSet;

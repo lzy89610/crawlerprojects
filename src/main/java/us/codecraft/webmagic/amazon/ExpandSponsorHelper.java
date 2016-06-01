@@ -39,13 +39,18 @@ public class ExpandSponsorHelper{
             HttpResponse response = HttpUtils.get(basicStr, params);
             if(response != null && response.getCode() == 200){
                 String content = response.getContent();
-                List<String> expandSponsorStrs  = new JsonPathSelector("$.data[*].content").selectList(content);
 
-                for(String s : expandSponsorStrs){
-                    Page page = new Page();
-                    page.setHtml(new Html(s));
-                    String asin = page.getHtml().xpath("//div[1]/@data-asin").toString();
-                    resultList.add(asin);
+                List<String> expandSponsorStrs  = null;
+                try{
+                    expandSponsorStrs = new JsonPathSelector("$.data[*].content").selectList(content);
+                    for(String s : expandSponsorStrs){
+                        Page page = new Page();
+                        page.setHtml(new Html(s));
+                        String asin = page.getHtml().xpath("//div[1]/@data-asin").toString();
+                        resultList.add(asin);
+                    }
+                }catch(NullPointerException e){
+                    //todo:记录这里的url，看下是不是真的没有sponsor
                 }
             }else{
                 System.out.println("warn: 获取扩展sponsor请求时出错，code:" + response.getCode());

@@ -1,25 +1,26 @@
 package us.codecraft.webmagic.amazon.cmd;
 
+import org.apache.http.HttpHost;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.amazon.ASINPipeLine;
 import us.codecraft.webmagic.amazon.AmazonProductProcessor;
-import us.codecraft.webmagic.amazon.model.ASINTemp;
-import us.codecraft.webmagic.utils.file.ReaderHelper;
+import us.codecraft.webmagic.scheduler.FileCacheQueueScheduler;
+import us.codecraft.webmagic.utils.date.DateUtils;
 import us.codecraft.webmagic.utils.file.WriterHelper;
-
-import java.util.List;
 
 /**
  * Created by lizeyu on 2016/5/27.
  */
 public class StartCrawl{
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception{
         WriterHelper.write(CmdConstant.config_file_path, "on");
 
         //site定义抽取配置，以及开始url等
          Site site = Site.me().setDomain("www.amazon.com")
                     .setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36")
+                    .setRetryTimes(2)
                     .addCookie("amznacsleftnav-458791882", "1")
                     .addCookie("amznacsleftnav-463302482", "1")
                     .addCookie("csm-hit", "0P4Q53Z7RSBMA8H98N0P+s-0P4Q53Z7RSBMA8H98N0P|1464328858866")
@@ -35,29 +36,34 @@ public class StartCrawl{
                     .addCookie("session-id", "188-0121876-7999171")
                     .addCookie("s_vnum", "1891924376706%26vn%3D1")
                     .addCookie("x-wl-uid", "1Tb1iVjeTxc6qyw8cVk6+dQjs+mCPqfgtxBVrhEXd5BybuEEs7iTEeOrakHOfyKPlN6XDYPUZv2c=")
-                    .addCookie("ubid-main", "191-4028859-2701517");
+                    .addCookie("ubid-main", "191-4028859-2701517")
+                    .setHttpProxy(new HttpHost("45.55.206.119", 80));
 //                    .addHeader("Upgrade-Insecure-Requests", "1")
 
-        site = init(site);
+//        site = init(site);
+        String date = DateUtils.getNowDateStr();
 
-        ASINTemp asinTemp = ASINTemp.getInstance();
-        Spider.create(new AmazonProductProcessor(site, asinTemp)).run();
+        Spider.create(new AmazonProductProcessor(site))
+                .setScheduler(new FileCacheQueueScheduler("E:\\amazonad\\config"))
+                .addPipeline(new ASINPipeLine("E:\\amazonad\\rawasin\\" + date + ".txt"))
+                .thread(5)
+                .run();
 
     }
 
-    /**
-     * 装载上一次运行时中的所有的url
-     * @param site
-     * @return
-     */
-    private static Site init(Site site){
-        List<String> requestUrls = ReaderHelper.getAdListFromFile(CmdConstant.shutdownenv_file_path);
-
-        for(String s : requestUrls){
-            site.addStartUrl(s);
-        }
-
-        return site;
-    }
+//    /**
+//     * 装载上一次运行时中的所有的url
+//     * @param site
+//     * @return
+//     */
+//    private static Site init(Site site){
+//        List<String> requestUrls = ReaderHelper.getAdListFromFile(CmdConstant.shutdownenv_file_path);
+//
+//        for(String s : requestUrls){
+//            site.addStartUrl(s);
+//        }
+//
+//        return site;
+//    }
 
 }
