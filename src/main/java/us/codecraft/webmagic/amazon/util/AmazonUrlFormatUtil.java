@@ -15,7 +15,8 @@ public class AmazonUrlFormatUtil{
      */
     public static String fromUrl(String url){
 
-        if(url.matches("http://www.amazon.com/dp/.*")){
+        if(url.matches("https://www.amazon.com/dp/.*") ||
+                url.matches("http://www.amazon.com/dp/.*")){
             String[] strArray = url.split("/");
             return strArray[4];
         }else{
