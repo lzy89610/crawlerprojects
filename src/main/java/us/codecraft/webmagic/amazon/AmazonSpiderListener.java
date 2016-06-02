@@ -23,20 +23,22 @@ public class AmazonSpiderListener implements SpiderListener{
 
         Integer statusCode = (Integer)request.getExtra("statusCode");
 
-        if(404 == statusCode){
-            //todo:
-            logger.error("can't get :", statusCode);
-        }else if(403 == statusCode){
-            logger.error("can't get :", statusCode);
-        }else{
-            logger.error("can't get :", statusCode);
-        }
-
         if(e instanceof ConnectTimeoutException){
             logger.error(e.getMessage());
         }
 
         if(e instanceof RuntimeException){
+            if(404 == statusCode){
+                //todo:
+                logger.error("404: ", request.getUrl());
+            }else if(403 == statusCode){
+                logger.error("403:", request.getUrl());
+            }else if(0 == statusCode){
+                logger.error("0:", request.getUrl());
+            }else{
+                logger.error(e.getMessage());
+            }
+
             logger.error(e.getMessage());
         }
 
