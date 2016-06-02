@@ -15,7 +15,9 @@ public class AmazonSpiderListener implements SpiderListener{
     }
 
     @Override
-    public void onError(Request request){
-        System.out.println("error");
+    public void onError(Request request, Exception e){
+        e.printStackTrace();
     }
+
+
 }
