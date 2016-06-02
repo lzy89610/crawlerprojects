@@ -21,12 +21,12 @@ public class AmazonSpiderListener implements SpiderListener{
     @Override
     public void onError(Request request, Exception e){
 
-        String statusCode = (String) request.getExtra("statusCode");
+        Integer statusCode = (Integer)request.getExtra("statusCode");
 
-        if("404".equals(statusCode)){
+        if(404 == statusCode){
             //todo:
             logger.error("can't get :", statusCode);
-        }else if("403".equals(statusCode)){
+        }else if(403 == statusCode){
             logger.error("can't get :", statusCode);
         }else{
             logger.error("can't get :", statusCode);
