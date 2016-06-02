@@ -1,13 +1,17 @@
 package us.codecraft.webmagic.amazon.cmd;
 
-import org.apache.http.HttpHost;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.amazon.ASINPipeLine;
 import us.codecraft.webmagic.amazon.AmazonProductProcessor;
+import us.codecraft.webmagic.amazon.AmazonSpiderListener;
 import us.codecraft.webmagic.scheduler.FileCacheQueueScheduler;
 import us.codecraft.webmagic.utils.date.DateUtils;
 import us.codecraft.webmagic.utils.file.WriterHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lizeyu on 2016/5/27.
@@ -37,13 +41,19 @@ public class StartCrawl{
                     .addCookie("s_vnum", "1891924376706%26vn%3D1")
                     .addCookie("x-wl-uid", "1Tb1iVjeTxc6qyw8cVk6+dQjs+mCPqfgtxBVrhEXd5BybuEEs7iTEeOrakHOfyKPlN6XDYPUZv2c=")
                     .addCookie("ubid-main", "191-4028859-2701517")
-                    .setHttpProxy(new HttpHost("45.55.206.119", 80));
+                    .setSleepTime(3000)
+                    .setTimeOut(5000)
+                    .setRetryTimes(2);
 //                    .addHeader("Upgrade-Insecure-Requests", "1")
 
 //        site = init(site);
         String date = DateUtils.getNowDateStr();
 
+        List<SpiderListener> spiderListeners = new ArrayList<SpiderListener>();
+        spiderListeners.add(new AmazonSpiderListener());
+
         Spider.create(new AmazonProductProcessor(site))
+                .setSpiderListeners(spiderListeners)
                 .setScheduler(new FileCacheQueueScheduler("E:\\amazonad\\config"))
                 .addPipeline(new ASINPipeLine("E:\\amazonad\\rawasin\\" + date + ".txt"))
                 .thread(5)
