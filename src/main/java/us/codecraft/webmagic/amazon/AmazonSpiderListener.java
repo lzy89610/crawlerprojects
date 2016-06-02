@@ -25,18 +25,19 @@ public class AmazonSpiderListener implements SpiderListener{
 
         if("404".equals(statusCode)){
             //todo:
+            logger.error("can't get :", statusCode);
         }else if("403".equals(statusCode)){
-
+            logger.error("can't get :", statusCode);
         }else{
-
+            logger.error("can't get :", statusCode);
         }
 
         if(e instanceof ConnectTimeoutException){
-
+            logger.error(e.getMessage());
         }
 
         if(e instanceof RuntimeException){
-
+            logger.error(e.getMessage());
         }
 
     }

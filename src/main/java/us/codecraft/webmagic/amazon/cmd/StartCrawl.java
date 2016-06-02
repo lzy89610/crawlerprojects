@@ -41,7 +41,7 @@ public class StartCrawl{
                     .addCookie("s_vnum", "1891924376706%26vn%3D1")
                     .addCookie("x-wl-uid", "1Tb1iVjeTxc6qyw8cVk6+dQjs+mCPqfgtxBVrhEXd5BybuEEs7iTEeOrakHOfyKPlN6XDYPUZv2c=")
                     .addCookie("ubid-main", "191-4028859-2701517")
-                    .setSleepTime(3000)
+                    .setSleepTime(2500)
                     .setTimeOut(5000)
                     .setRetryTimes(2);
 //                    .addHeader("Upgrade-Insecure-Requests", "1")

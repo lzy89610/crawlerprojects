@@ -5,7 +5,6 @@ import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.JsonPathSelector;
 import us.codecraft.webmagic.utils.http.HttpResponse;
 import us.codecraft.webmagic.utils.http.HttpUtils;
-import us.codecraft.webmagic.utils.log.LogUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,11 +53,11 @@ public class ExpandSponsorHelper{
                 }
             }else{
                 System.out.println("warn: 获取扩展sponsor请求时出错，code:" + response.getCode());
-                LogUtil.info("warn: 获取扩展sponsor请求时出错，code:" + response.getCode());
+//                LogUtil.info("warn: 获取扩展sponsor请求时出错，code:" + response.getCode());
             }
         }catch(Exception e){
             System.out.println("warn: 获取扩展sponsor请求时出错" + e.getMessage());
-            LogUtil.info("warn: 获取扩展sponsor请求时出错" + e.getMessage());
+//            LogUtil.info("warn: 获取扩展sponsor请求时出错" + e.getMessage());
         }
 
         return resultList;

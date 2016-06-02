@@ -1,12 +1,13 @@
 package us.codecraft.webmagic.amazon;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.amazon.model.ASINSet;
 import us.codecraft.webmagic.amazon.util.AmazonUrlFormatUtil;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.utils.log.LogUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +18,8 @@ import java.util.Set;
  * @author lizeyu
  */
 public class AmazonProductProcessor implements PageProcessor {
+
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private Site site;
 
@@ -59,8 +62,9 @@ public class AmazonProductProcessor implements PageProcessor {
             List<String> expandUrls = AmazonUrlFormatUtil.fromASIN(expandAsins);
             page.addTargetRequests(expandUrls);
         }else{
-            System.out.println("该页面没有解析出ASIN码，导致无法查询出扩展信息，请核实页面" + page.getUrl());
-            LogUtil.info("该页面没有解析出ASIN码，导致无法查询出扩展信息，请核实页面" + page.getUrl());
+//            System.out.println("该页面没有解析出ASIN码，导致无法查询出扩展信息，请核实页面" + page.getUrl());
+//            LogUtil.info("该页面没有解析出ASIN码，导致无法查询出扩展信息，请核实页面" + page.getUrl());
+            logger.error("该页面没有解析出ASIN码，导致无法查询出扩展信息，请核实页面" + page.getUrl());
         }
 
         return new HashSet<String>(asins);

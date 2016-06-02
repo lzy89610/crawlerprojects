@@ -8,19 +8,34 @@
         </layout>
     </appender>
 
+    <appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="E:/amazonad/log/amazonad" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n" />
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="error" />
+            <param name="levelMax" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
     <logger name="org.springframework" additivity="false">
         <level value="warn" />
-        <appender-ref ref="stdout" />
+        <appender-ref ref="fileAppender" />
     </logger>
 
     <logger name="net.sf.ehcache" additivity="false">
         <level value="warn" />
-        <appender-ref ref="stdout" />
+        <appender-ref ref="fileAppender" />
     </logger>
 
     <root>
         <level value="info" />
         <appender-ref ref="stdout" />
+        <appender-ref ref="fileAppender" />
     </root>
 
 </log4j:configuration>
